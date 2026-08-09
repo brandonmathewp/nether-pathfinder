@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 project(nether_pathfinder)
 
 find_package(JNI COMPONENTS JNI_INCLUDE_DIRS)
+if(NOT JNI_FOUND)
+    set(JNI_INCLUDE_DIRS "$ENV{JAVA_HOME}/include;$ENV{JAVA_HOME}/include/linux")
+endif()
 include_directories(${JNI_INCLUDE_DIRS})
 
 find_package(PkgConfig) # not required

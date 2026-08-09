@@ -73,7 +73,7 @@ extern "C" {
         }
 
         JNIEnv* env;
-        if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_8) != JNI_OK) {
+        if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6) != JNI_OK) {
             return JNI_EVERSION;
         }
 
@@ -88,12 +88,12 @@ extern "C" {
             .pathSegmentCtor  = ctor
         };
 
-        return JNI_VERSION_1_8;
+        return JNI_VERSION_1_6;
     }
 
     EXPORT void JNICALL JNI_OnUnload(JavaVM* vm, void* reserved) {
         JNIEnv* env;
-        if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_8) != JNI_OK) {
+        if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6) != JNI_OK) {
             return;
         }
 

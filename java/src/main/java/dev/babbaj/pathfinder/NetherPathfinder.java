@@ -87,6 +87,16 @@ public class NetherPathfinder {
         return IS_LOADED;
     }
 
+    private static boolean isAndroid() {
+        try {
+            String vmName = System.getProperty("java.vm.name");
+            if (vmName != null && vmName.toLowerCase().contains("dalvik")) {
+                return true;
+            }
+        } catch (Exception ignored) {}
+        return false;
+    }
+
     private static String getNativeLibName() {
         final int bits = Integer.parseInt(System.getProperty("sun.arch.data.model"));
         if (bits != 64) {
@@ -106,6 +116,9 @@ public class NetherPathfinder {
         }
 
         if (osName.contains("linux")) {
+            if (isAndroid()) {
+                return "libnether_pathfinder-" + arch + "-android.so";
+            }
             return "libnether_pathfinder-" + arch + ".so";
         } else if (osName.contains("windows")) {
             return "nether_pathfinder-" + arch + ".dll";
