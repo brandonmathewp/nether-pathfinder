@@ -10,10 +10,27 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: 'recursive'
+
       - name: Setup Gradle
         uses: ./.github/actions/build-deps
+
+      - name: Setup Android NDK
+        run: |
+          NDK_VER="28.2.13676358"
+          NDK_PATH="/usr/local/lib/android/sdk/ndk/${NDK_VER}"
+          if [ ! -f "${NDK_PATH}/build/cmake/android.toolchain.cmake" ]; then
+            echo "Downloading Android NDK ${NDK_VER}..."
+            mkdir -p "$(dirname "${NDK_PATH}")"
+            wget -q "https://dl.google.com/android/repository/android-ndk-r28b-linux.zip" -O /tmp/ndk.zip
+            unzip -q /tmp/ndk.zip -d /tmp
+            mv /tmp/android-ndk-r28b "${NDK_PATH}"
+            rm /tmp/ndk.zip
+          fi
+          echo "ANDROID_NDK_HOME=${NDK_PATH}" >> $GITHUB_ENV
+
       - name: Setup Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
+
       - name: Run gradle build
         run: |
           cd java
